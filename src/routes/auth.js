@@ -46,10 +46,26 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/forgot", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+    const checkUserExistence = await User.findOne({ emailId: emailId });
+    console.log(checkUserExistence);
+    if (checkUserExistence) {
+      const encryptedPassword = await bcrypt.hash(password, 10);
+      checkUserExistence.password = encryptedPassword;
+      checkUserExistence.save();
+      res.send(checkUserExistence);
+    }
+  } catch (error) {
+    res.status(400).send("unable to update password");
+  }
+});
+
 router.post("/logout", async (req, res) => {
   try {
     res.clearCookie("token");
-    res.send("User logout successfully")
+    res.send("User logout successfully");
   } catch (error) {
     res.status(400).send("unable to logout");
   }
