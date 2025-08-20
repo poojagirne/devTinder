@@ -49,6 +49,7 @@ router.post("/login", async (req, res) => {
 router.post("/logout", async (req, res) => {
   try {
     res.clearCookie("token");
+    res.send("User logout successfully")
   } catch (error) {
     res.status(400).send("unable to logout");
   }
