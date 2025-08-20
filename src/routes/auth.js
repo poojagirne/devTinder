@@ -1,5 +1,5 @@
-const express=require("express")
-const router=express.Router()
+const express = require("express");
+const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const cookies = require("cookie-parser");
@@ -46,4 +46,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
-module.exports=router;
+router.post("/logout", async (req, res) => {
+  try {
+    res.clearCookie("token");
+  } catch (error) {
+    res.status(400).send("unable to logout");
+  }
+});
+module.exports = router;
